@@ -47,3 +47,10 @@ options → choices available to the player
 Each option sends the player to another node using nextText.
 
 </details>
+
+### Starting Node (ID: 1)
+
+| Option   | Description                    | State Change    | Next Node |
+| -------- | ------------------------------ | --------------- | --------- |
+| ⬅️ Left  | Venture down the left hallway  | `goLeft: true`  | 2         |
+| ➡️ Right | Venture down the right hallway | `goRight: true` | 99        |
