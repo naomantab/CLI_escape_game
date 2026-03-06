@@ -10,7 +10,10 @@ function startGame() {
 
 function showTextNode(textNodeIndex) {
   const textNode = textNodes.find(textNode => textNode.id === textNodeIndex)
+
   textElement.innerText = textNode.text
+  document.getElementById("sceneImage").src = textNode.image  // <-- ADD THIS LINE HERE
+
   while (optionButtonsElement.firstChild) {
     optionButtonsElement.removeChild(optionButtonsElement.firstChild)
   }
@@ -25,7 +28,6 @@ function showTextNode(textNodeIndex) {
     }
   })
 }
-
 
 function showOption(option) {
   return option.requiredState == null || option.requiredState(state)
@@ -52,6 +54,7 @@ const textNodes = [
     You exit the door and contemplate on your choices. Which door to take next?\n\
     Pick wisely for it may lead to your demise\n\
     Left or right? \n<=== . ===>", // opening description
+    image: 'images/start.png',
     options: [
       {
         text: '<==== Left', // CHAM
@@ -70,25 +73,107 @@ const textNodes = [
 
 
 // CHAM SECTION (LEFT CHILD)
+
   {
     id: 2,
-    text: 'You venture forth in search of answers to where you are when you come across a merchant.',
+    text: "You come across an exit door that's bordered off... But why?",
+    image: 'images/2.png',
     options: [
       {
-        text: 'Trade the goo for a sword', //BUTTON 1
+        text: 'Shout for help', //BUTTON 1
         requiredState: (currentState) => currentState.goLeft,
-        setState: { goLeft: false, sword: true },
-        nextText: 3
+        // setState: { goLeft: false, sword: true },
+        nextText: 4
       },
       {
-        text: 'Trade the goo for a shield', //BUTTON 2
+        text: 'Force it open', //BUTTON 2
         requiredState: (currentState) => currentState.goLeft,
-        setState: { goLeft: false, shield: true },
+        // setState: { goLeft: false, shield: true },
         nextText: 3
       },
+    ]
+  },
+
+{
+    id: 3,
+    text: 'OUCH!! That was rough. Why would anyone do that to they hospital doors?... Also, w- wait... Why are the streets so empty?',
+    image: 'images/3.png',
+    options: [
       {
-        text: 'Ignore the merchant', // BUTTON 3
-        nextText: 3
+        text: 'Explore the street',
+        nextText: 14
+      },
+      {
+        text: 'Shout for someone... Anyone...',
+        nextText: 4
+      },
+      {
+        text: 'Go back to the hospital',
+        nextText: 6
+      }
+    ]
+  },
+
+
+
+
+// CHAM - DEAD END
+  {
+    id: 4,
+    text: "A herd of zombies emerged from the hospital rooms. You're a gonner!",
+    image: "images/RIP.png",
+    options: [
+      {
+        text: 'Restart',
+        nextText: -1
+      }
+    ]
+  },
+
+
+
+
+// CHAM - ONE OPTION
+  {
+    id: 6,
+    text: 'Bad idea. You notice a herd of zombie-looking things emerge from the hospital',
+    image: 'images/6.png',
+    options: [
+      {
+        text: 'RUN!',
+        nextText: 7
+      }
+    ]
+  },
+
+
+
+
+// CHAM - DEAD END
+  {
+    id: 7,
+    text: 'Oops! You trip and fall and smash your head open',
+    image: "images/RIP.png",
+    options: [
+      {
+        text: 'Restart',
+        nextText: -1
+      }
+    ]
+  },
+
+
+
+
+//CHAM - THE ESCAPE ROUTE
+  {
+    id: 14,
+    text: 'You come across an abandoned open car with the keys in it.',
+    image: "images/14.png",
+    options: [
+      {
+        text: 'Congratulations. You escaped the herd!',
+        nextText: -1
       }
     ]
   },
@@ -98,6 +183,7 @@ const textNodes = [
   {
     id: 99,
     text: 'You venture forth in search of answers to where you are when you encounter two items',
+    image: 'images/99.png',
     options: [
       {
         text: 'Take the med-kit', //BUTTON 1
@@ -123,6 +209,7 @@ const textNodes = [
     id: 98,
     text: 'An ominious shadow appears behind you.\n\
     You turn around, startled',
+    image: 'images/98.png',
     options: [
       {
         text: 'Attack the monster with a scalpel',
@@ -145,6 +232,7 @@ const textNodes = [
     It delivers a quick blow, making your vision blurry.\n\
     You reach out to the med-kit you had picked up but your vision fades.\n\
     You did  not escape. The end.',
+    image: 'images/RIP.png',
     options: [
       {
         text: 'Restart',
@@ -160,6 +248,7 @@ const textNodes = [
   {
     id: 96,
     text: 'You take a swing at the chimera with your scalpel in hand, it winces in pain and retreats',
+    image: 'images/96.png',
     options: [
       {
         text: 'Chase after it',
@@ -179,6 +268,7 @@ const textNodes = [
   {
     id: 95,
     text: 'You follow its footsteps as it scurries away into the dark hallway and eventually confront it again.',
+    image: 'images/95.png',
     options: [
       {
         text: 'Attack it with your scalpel',
@@ -210,6 +300,7 @@ const textNodes = [
     id: 92,
     text: 'It senses your weakness and attacks ferociosly, ultimately meeting your demise\n\
     You did  not escape. The end.',
+    image: 'images/RIP.png',
     options: [
       {
         text: 'Restart',
@@ -223,6 +314,7 @@ const textNodes = [
     text: 'You foolishly thought this monster could be slain with a single punch.\n\
     You arent superman mate.\n\
     You did  not escape. The end.',
+    image: 'images/RIP.png',
     options: [
       {
         text: 'Restart',
@@ -237,6 +329,7 @@ const textNodes = [
     Upon your victory, your run out of the hospital, \n\
     with many questions left to answer. Who? What? Where? Why? How? \n\
     Alas, it doesnt matter as you have esaped that nightmare.',
+    image: 'images/93.png',
     options: [
       {
         text: 'Congratulations. Play Again.',
