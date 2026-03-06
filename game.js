@@ -1,11 +1,11 @@
 const textElement = document.getElementById('text')
-const optionButtonsElement = document.getElementById('options-buttons')
+const optionButtonsElement = document.getElementById('option-buttons')
 
 let state = {}
 
 function startGame() {
-    state = {}
-    showTextNode(1)
+  state = {}
+  showTextNode(1)
 }
 
 function showTextNode(textNodeIndex) {
@@ -24,19 +24,11 @@ function showTextNode(textNodeIndex) {
       optionButtonsElement.appendChild(button)
     }
   })
+}
 
-    function showOption(option) {
-    return option.requiredState == null || option.requiredState(state)
-    }
 
-    function selectOption(option) {
-    const nextTextNodeId = option.nextText
-    if (nextTextNodeId <= 0) {
-        return startGame()
-    }
-    state = Object.assign(state, option.setState)
-    showTextNode(nextTextNodeId)
-    }
+function showOption(option) {
+  return option.requiredState == null || option.requiredState(state)
 }
 
 function selectOption(option) {
@@ -49,24 +41,225 @@ function selectOption(option) {
 }
 
 
-const textNodes = [
-    {
-        id:1
-        text: "    You wake up, drowsy and light headed, in an unfamiliar hospital room.\n\
-        Who are you? Where are you? How did you get here? All questions with no answer.\n\
-        You stumble across to the room and reach the door. A cold shiver running down your spine.\n\
-        The door creaks open on its own but silence awaits on the other side.\n\
-        You exit the door and contemplate on your choices. Which door to take next?\n\
-        Pick wisely for it may lead to your demise"
-        options : [
-            {
-                text: "    Left or right? \n<==- . ===>"
-                setState: { blueGoo:true}
-                nextText: 2
-            }
-        ]
-    }
-  
 
+const textNodes = [
+  { // THE INITIAL 2 BUTTONS
+    id: 1,
+    text: 'Our placeholder text goes here', // opening description
+    options: [
+      {
+        text: '<==== Left', // CHAM
+        setState: { goLeft: true },
+        nextText: 2
+      },
+      {
+        text: 'Right ===>', // NAOMAN - I think we need to add a setState here just like the above
+        setState: { goRight: true }, //adding this line for goRight
+        nextText: 99 // changed to new - 99
+      }
+    ]
+  }, //SECTION END
+
+
+
+
+// CHAM SECTION (LEFT CHILD)
+  {
+    id: 2,
+    text: 'You venture forth in search of answers to where you are when you come across a merchant.',
+    options: [
+      {
+        text: 'Trade the goo for a sword', //BUTTON 1
+        requiredState: (currentState) => currentState.goLeft,
+        setState: { goLeft: false, sword: true },
+        nextText: 3
+      },
+      {
+        text: 'Trade the goo for a shield', //BUTTON 2
+        requiredState: (currentState) => currentState.goLeft,
+        setState: { goLeft: false, shield: true },
+        nextText: 3
+      },
+      {
+        text: 'Ignore the merchant', // BUTTON 3
+        nextText: 3
+      }
+    ]
+  },
+
+
+// TESTING NEW SECTION (RIGHT CHILD) - NAOMAN
+  {
+    id: 99,
+    text: 'You venture forth in search of answers to where you are when you come across a merchant.',
+    options: [
+      {
+        text: 'Trade the goo for a sword', //BUTTON 1
+        requiredState: (currentState) => currentState.goRight,
+        setState: { goRight: false, sword: true },
+        nextText: 3
+      },
+      {
+        text: 'Trade the goo for a shield', //BUTTON 2
+        requiredState: (currentState) => currentState.goRight,
+        setState: { goRight: false, shield: true },
+        nextText: 3
+      },
+      {
+        text: 'Ignore the merchant', // BUTTON 3
+        nextText: 3
+      }
+    ]
+  },
+
+
+
+
+
+
+  {
+    id: 3,
+    text: 'After leaving the merchant you start to feel tired and stumble upon a small town next to a dangerous looking castle.',
+    options: [
+      {
+        text: 'Explore the castle',
+        nextText: 4
+      },
+      {
+        text: 'Find a room to sleep at in the town',
+        nextText: 5
+      },
+      {
+        text: 'Find some hay in a stable to sleep in',
+        nextText: 6
+      }
+    ]
+  },
+
+
+
+
+
+  {
+    id: 4,
+    text: 'You are so tired that you fall asleep while exploring the castle and are killed by some terrible monster in your sleep.',
+    options: [
+      {
+        text: 'Restart',
+        nextText: -1
+      }
+    ]
+  },
+  {
+    id: 5,
+    text: 'Without any money to buy a room you break into the nearest inn and fall asleep. After a few hours of sleep the owner of the inn finds you and has the town guard lock you in a cell.',
+    options: [
+      {
+        text: 'Restart',
+        nextText: -1
+      }
+    ]
+  },
+
+
+
+
+
+  {
+    id: 6,
+    text: 'You wake up well rested and full of energy ready to explore the nearby castle.',
+    options: [
+      {
+        text: 'Explore the castle',
+        nextText: 7
+      }
+    ]
+  },
+
+
+
+
+
+  {
+    id: 7,
+    text: 'While exploring the castle you come across a horrible monster in your path.',
+    options: [
+      {
+        text: 'Try to run',
+        nextText: 8
+      },
+      {
+        text: 'Attack it with your sword',
+        requiredState: (currentState) => currentState.sword,
+        nextText: 9
+      },
+      {
+        text: 'Hide behind your shield',
+        requiredState: (currentState) => currentState.shield,
+        nextText: 10
+      },
+      {
+        text: 'Throw the blue goo at it',
+        requiredState: (currentState) => currentState.blueGoo,
+        nextText: 11
+      }
+    ]
+  },
+
+
+
+
+
+  {
+    id: 8,
+    text: 'Your attempts to run are in vain and the monster easily catches.',
+    options: [
+      {
+        text: 'Restart',
+        nextText: -1
+      }
+    ]
+  },
+  {
+    id: 9,
+    text: 'You foolishly thought this monster could be slain with a single sword.',
+    options: [
+      {
+        text: 'Restart',
+        nextText: -1
+      }
+    ]
+  },
+
+
+
+
+
+  {
+    id: 10,
+    text: 'The monster laughed as you hid behind your shield and ate you.',
+    options: [
+      {
+        text: 'Restart',
+        nextText: -1
+      }
+    ]
+  },
+
+
+
+
+
+  {
+    id: 11,
+    text: 'You threw your jar of goo at the monster and it exploded. After the dust settled you saw the monster was destroyed. Seeing your victory you decide to claim this castle as your and live out the rest of your days there.',
+    options: [
+      {
+        text: 'Congratulations. Play Again.',
+        nextText: -1
+      }
+    ]
+  }
+]
 
 startGame()
